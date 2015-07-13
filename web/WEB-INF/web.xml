@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+
+
+    <display-name></display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>userservlet</servlet-name>
+        <servlet-class>edu.servlet.UserServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>userservlet</servlet-name>
+        <url-pattern>/userServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>goodsServlet</servlet-name>
+        <servlet-class>edu.servlet.GoodsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>goodsServlet</servlet-name>
+        <url-pattern>/goodsServlet</url-pattern>
+    </servlet-mapping>
+
+</web-app>
