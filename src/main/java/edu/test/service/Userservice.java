@@ -6,6 +6,7 @@ import edu.test.vo.User;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by huan on 2015/7/6 0006.
@@ -31,6 +32,22 @@ public class Userservice {
 
     }
 
+    public String getId(int length){
+        String fatherString = "afjaskljwoieurlwngkfiuparewjrj230948205j3245237489234HUAWABJGHWYEBVNCLKSDJKJWYEUIWQHRKJKJFASHDNKML";
+
+        Random ran = new Random();
+
+        StringBuffer sb = new StringBuffer();
+        for(int i = 1; i <= length; i++){
+            int index = ran.nextInt(fatherString.length());
+
+            char ch = fatherString.charAt(index);
+            sb.append(ch);
+        }
+
+        return sb.toString();
+    }
+
     public User doLogin(String name,String pwd) {
 
         return userDao.loginByNameAndPwd(name,pwd);
@@ -50,5 +67,13 @@ public class Userservice {
     {
         int num = userDao.getUserNum();
         return num % pageSize==0 ? num/pageSize : num/pageSize+1;
+    }
+
+    public User getUserById(String id){
+        return userDao.queryUserById(id);
+    }
+
+    public boolean isExist(String name){
+       return userDao.queryNameByName(name);
     }
 }

@@ -33,6 +33,56 @@ public class GoodsServlet extends HttpServlet{
         }
         response.setContentType("text/html;charset=UTF-8");
 
+
+        String opt = request.getParameter("opt");
+        if ("detail".equals(opt)){
+
+            showDetail(request, response);
+
+        }else if ("key".equals(opt)){
+                
+            key(request,response);
+        }
+        else {
+            showPage(request, response);
+        }
+
+    }
+
+    private void key(HttpServletRequest request, HttpServletResponse response) {
+
+        String key = request.getParameter("keyval");
+        List<String> list = goodsService.getNameByKey(key);
+        StringBuffer sb = new StringBuffer();
+        int index = 0;
+        for (String s : list){
+            sb.append("<span class='cl'>").append(s).append("</span><br>");
+        }
+        try {
+            response.getWriter().write(sb.toString());
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showDetail(HttpServletRequest request ,HttpServletResponse response){
+       String id = request.getParameter("id");
+
+        GoodsService goodsService1 = new GoodsService();
+        Goods goods = goodsService1.getGoodsById(id);
+
+        request.setAttribute("curGoods",goods);
+        try {
+            request.getRequestDispatcher("/detail.jsp").forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void showPage(HttpServletRequest request ,HttpServletResponse response){
         int curPage = request.getParameter("curPage")==null ? 1 : Integer.parseInt(request.getParameter("curPage"));
         int pageSize = request.getParameter("pageSize") == null ? 4 :Integer.parseInt(request.getParameter("pageSize"));
 
@@ -49,7 +99,6 @@ public class GoodsServlet extends HttpServlet{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 }

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title></title>
+    <title>欢淘网</title>
       <style type="text/css">
           .in{width:200px; height:30px; border:1px solid gray;font-size:16px;padding-top:5px;}
           tr{height:50px;}

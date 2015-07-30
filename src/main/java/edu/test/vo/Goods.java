@@ -11,6 +11,16 @@ public class Goods {
     private int goodsNum;
     private String goodsImg;
 
+    public int getBuyNum() {
+        return buyNum;
+    }
+
+    public void setBuyNum(int buyNum) {
+        this.buyNum = buyNum;
+    }
+
+    private int buyNum;
+
     public String getGoodsId() {
         return goodsId;
     }

@@ -6,10 +6,7 @@ import edu.test.vo.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
@@ -40,10 +37,14 @@ public class UserServlet extends HttpServlet {
         {
             regist(request,response);
         }
-        if ("login".equals(opt))
+        else if ("login".equals(opt))
         {
             login(request,response);
 
+        }
+        else if("exist".equals(opt)){
+
+            exist(request,response);
         }
         if ("login2".equals(opt))
         {
@@ -60,6 +61,29 @@ public class UserServlet extends HttpServlet {
             }
 
         }
+    }
+
+    private void exist(HttpServletRequest request, HttpServletResponse response) {
+
+        String name = request.getParameter("name");
+        boolean rel = service.isExist(name);
+        System.out.println(rel);
+
+           //response.getOutputStream().write(rel ? 1 : 0);
+           // response.getWriter().println(rel);
+            String r = null;
+            if(rel){
+                r  = "<font color='red'>对不起，用户名已被使用</font>";
+
+            }else{
+                r = "<font color='green'>恭喜你用户名可以使用</font>";
+            }
+        try {
+            response.getWriter().println(r);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public  void regist(HttpServletRequest request,HttpServletResponse response)
@@ -106,6 +130,18 @@ public class UserServlet extends HttpServlet {
         if(user!=null)
         {
             session.setAttribute("curUser", user);
+            String[] s = request.getParameterValues("status");
+            if (s !=null && "1".equals(s[0])){
+                Cookie cookie = new Cookie("curUser",user.getUserId());
+
+               //cookie.setMaxAge(60 * 60 * 24 * 7);
+                cookie.setMaxAge(20);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
+
+
+
              dis  = request.getRequestDispatcher("/goodsServlet");
             try {
                 dis.forward(request,response);

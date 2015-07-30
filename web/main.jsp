@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'main.jsp' starting page</title>
+    <title>欢淘网</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -20,6 +20,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+
+      <style type = "text/css">
+
+          #page a{width: 20px;height: 20px;border: 1px solid black;margin: 0px 10px;text-align: center;text-decoration: none;}
+
+      </style>
+
+      <script type="text/javascript" src="<%=path%>/js/jquery-1.6.4.js"></script>
+
+      <script type="text/javascript">
+            $(document).ready(function () {
+                    $("strong").click(function() {
+                        document.getElementById("f1").style.backgroundColor;
+                    });
+
+                $(":text").keyup(function () {
+                        var reg = /^\d+$/;
+                        if(reg.test($(this).val())){
+                            if( !$(this).val() >= 1)
+                            {
+                                $(this).val("1");
+                            }
+                        }
+                        else{
+                            $(this).val("1");
+                        }
+                }
+                );
+            });
+
+      </script>
 
   </head>
   
@@ -59,9 +90,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     %>
 
                 <div>
-                   <img alt="" src="<%=path%>/images/<%=goods.getGoodsImg()%>" width="100px" height="100px"/><br/>
-                    <%=goods.getGoodsName() %><br/>
-                    <%=goods.getGoodsPrice() %>
+                    <a href="<%=path%>/goodsServlet?opt=detail&id=<%=goods.getGoodsId()%>">
+                    <img alt="" style="border: none;    " src="<%=path%>/images/<%=goods.getGoodsImg()%>" width="100px" height="100px"/></a><br/>
+                    <a href="<%=path%>/goodsServlet?opt=detail&id=<%=goods.getGoodsId()%>">
+                     <%=goods.getGoodsName() %></a><br/>
+                     <%=goods.getGoodsPrice() %>
                 </div>
     <%
                 }
@@ -75,33 +108,76 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     %>
         <br/>
-    <%
-        if (objCurPage != null && objMaxPage != null)
-        {
+        <form class="" style="display:inline" id = "f1"  action="<%=path%>/goodsServlet" method="post">
+        <div id="page">
+        <%if (objCurPage != null && objMaxPage!=null) {
             int curPage = Integer.parseInt(objCurPage.toString());
             int maxPage = Integer.parseInt(objMaxPage.toString());
 
             out.write("第"+curPage+"页，共"+maxPage+"页");
 
-            int start = maxPage <= 10 ? 1 :(curPage<10 ? 1:curPage-5);
+            if (maxPage<8){
+                for (int i = 1; i <=maxPage ; i++) {
+                    if (curPage==i) {
+        %>
+            <a id="a1" href="<%=path%>/goodsServlet?opt=aa&curPage=<%=i%>" style="background-color: gray;color: #ffffff"><%=i%></a>
 
-            int end = maxPage <=10 ? maxPage : (curPage+4)>maxPage ? maxPage : curPage+4;
-
-            for (int i = start;i<=end;i++)
-            {
-                if (i==curPage) {
-     %>
-        <a href = "<%=path%>/goodsServlet?curPage=<%=i%>" style="background-color: gray;color:white"><%=i%></a>
-     <%
-                           }else{
-     %>
-        <a href="<%=path%>/goodsServlet?curPage=<%=i%>"><%=i%></a>
         <%
 
-                                }
-            }
-        }
-    %>
+                    }else {%>
+        <a id="a1" href="<%=path%>/goodsServlet?curPage=<%=i%>"><%=i%></a>
+        <%
+                    }
+                 }
 
+            }else {
+                if (curPage==1){
+        %>
+        <a href="<%=path%>/goodsServlet?curPage=<%=curPage%>" style="background-color: gray;color: #ffffff"><%=curPage%></a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=curPage+1%>"><%=curPage+1%></a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=curPage+2%>"><%=curPage+2%></a>
+        ......
+
+        <a href="<%=path%>/goodsServlet?curPage=<%=maxPage-2%>"><%=maxPage-2%></a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=maxPage-1%>"><%=maxPage-1%></a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=maxPage%>"><%=maxPage%></a>
+
+        <%
+               }else if (curPage+6<=maxPage){
+        %>
+        <a href="<%=path%>/goodsServlet?curPage=<%=curPage-1%>">上一页</a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=curPage-1%>"><%=curPage-1%></a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=curPage%>" style="background-color:gray;color:#ffffff"><%=curPage%></a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=curPage+1%>"><%=curPage+1%></a>
+        ......
+        <a href="<%=path%>/goodsServlet?curPage=<%=maxPage-2%>"><%=maxPage-2%></a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=maxPage-1%>"><%=maxPage-1%></a>
+        <a href="<%=path%>/goodsServlet?curPage=<%=maxPage%>"><%=maxPage%></a>
+        <%
+                }else {
+                    for (int i=curPage-1;i<=maxPage;i++)
+                    {
+                        if (curPage==i){
+         %>
+                        <a href="<%=path%>/goodsServlet?curPage=<%=i%>" style="background-color: gray;color:#ffffff"><%=i%></a>
+          <%
+                              } else { %>
+                   <a href="<%=path%>/goodsServlet?curPage=<%=i%>"><%=i%></a>
+
+        <%
+
+                        }
+                    }
+                }
+
+             }
+        }
+        %>
+            <input type="text" style="width: 30px"  name="curPage"/>
+            <!--<strong style="cursor:pointer">GO</strong>-->
+            <input type="submit" id="bt1" value="GO"/>
+
+        </form>
+        </div>
     </body>
 </html>

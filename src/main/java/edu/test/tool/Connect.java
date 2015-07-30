@@ -11,11 +11,13 @@ public class Connect {
     public static Connection con()
     {
         try {
+            //  注册数据库驱动程序
             Class.forName("oracle.jdbc.driver.OracleDriver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         try {
+            //获取连接对象
            return  DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "scott", "tiger");
         } catch (SQLException e) {
             e.printStackTrace();

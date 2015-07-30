@@ -48,6 +48,31 @@ public class UserDao {
         }
         return false;
     }
+
+
+    public User queryUserById(String id){
+
+        Connection conn = connect.con();
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM userinfo1 WHERE userId=?");
+            preparedStatement.setString(1,id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next())
+            {
+                user.setUserId(rs.getString("userId"));
+                user.setUserName(rs.getString("userName"));
+                user.setUserPwd(rs.getString("userPwd"));
+                return  user;
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public User loginByNameAndPwd(String name,String pwd)
     {
 
@@ -172,6 +197,22 @@ public class UserDao {
         }
 
         return 0;
+    }
+    public boolean queryNameByName(String name) {
+
+        Connection conn = Connect.con();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement("SELECT * FROM  userinfo1 WHERE userName = ?");
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
